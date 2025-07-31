@@ -12,14 +12,13 @@ class ImageIndexer:
     def __init__(self, model_name: str = "clip-ViT-B-32"):
         self.model = SentenceTransformer(model_name)
         self.dimension = self.model.get_sentence_embedding_dimension()
-        self.index = faiss.IndexFlatL2(int(self.dimension))
+        self.index = faiss.IndexFlatL2(self.dimension)
         self.image_paths = []
 
     def _process_image(self, image_path: str) -> np.ndarray:
         try:
             image = Image.open(image_path).convert('RGB')
-            # For sentence-transformers >=2.2.0, use as_tensor=False for numpy output
-            embeddings = self.model.encode([image], batch_size=1, as_tensor=False)
+            embeddings = self.model.encode([image], batch_size=1, convert_to_numpy=True)
             return embeddings[0]
         except Exception as e:
             print(f"Error processing image {image_path}: {str(e)}")

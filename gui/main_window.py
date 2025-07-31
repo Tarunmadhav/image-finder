@@ -2,7 +2,7 @@ import os
 from PyQt5.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton, QFileDialog, QListWidget, QListWidgetItem, QHBoxLayout, QProgressBar, QApplication
 )
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from engine.searcher import ImageSearcher
 
@@ -79,7 +79,7 @@ class MainWindow(QMainWindow):
             item.setToolTip(path)
             pixmap = QPixmap(path)
             if not pixmap.isNull():
-                icon = QIcon(pixmap.scaled(100, 100, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                icon = QPixmap(pixmap).scaled(100, 100, Qt.KeepAspectRatio, Qt.SmoothTransformation)
                 item.setIcon(icon)
             self.result_list.addItem(item)
         self.info_label.setText("Search complete. Hover over results to see full path.")
