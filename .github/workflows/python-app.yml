@@ -9,11 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python
+    - name: Set up Python 3.13
       uses: actions/setup-python@v5
       with:
         python-version: '3.13'
@@ -23,6 +22,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run App (headless)
-      run: python main_app.py
-      continue-on-error: true  # Allows build to continue even if GUI can't launch
+    - name: Run App Headless (fix Qt plugin error)
+      run: |
+        export QT_QPA_PLATFORM=offscreen
+        python main_app.py
+      continue-on-error: true
+
+    - name: Install PyInstaller
+      run: pip install pyinstaller
+
+    - name: Build Executable
+      run: pyinstaller --onefile main_app.py
