@@ -1,0 +1,19 @@
+name: Release on push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ github.sha }}
+        name: Release ${{ github.sha }}
+        body: Automated release from commit ${{ github.sha }}
